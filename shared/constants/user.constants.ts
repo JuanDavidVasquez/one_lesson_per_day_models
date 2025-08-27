@@ -1,0 +1,8 @@
+export const USER_CONSTANTS = {
+  MAX_LOGIN_ATTEMPTS: 5,
+  LOCK_TIME: 15 * 60 * 1000, // 15 minutos
+  VERIFICATION_CODE_EXPIRY: 24 * 60 * 60 * 1000, // 24 horas
+  RESET_TOKEN_EXPIRY: 60 * 60 * 1000, // 1 hora
+  DEFAULT_TIMEZONE: 'UTC',
+  DEFAULT_LOCALE: 'en',
+} as const;
