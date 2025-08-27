@@ -322,3 +322,37 @@ function simpleEmailHash(email: string): string {
   
   return Math.abs(hash).toString(16);
 }
+
+// ===== HELPERS DE VALIDACIÓN =====
+
+/**
+ * Validar email
+ */
+export const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+/**
+ * Validar password (mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número)
+ */
+export const isValidPassword = (password: string): boolean => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(password);
+};
+
+/**
+ * Validar username (3-20 caracteres, solo letras, números y guiones bajos)
+ */
+export const isValidUsername = (username: string): boolean => {
+  const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+  return usernameRegex.test(username);
+};
+
+/**
+ * Validar phone (formato internacional básico)
+ */
+export const isValidPhone = (phone: string): boolean => {
+  const phoneRegex = /^\+?[\d\s\-\(\)]{10,15}$/;
+  return phoneRegex.test(phone);
+};
