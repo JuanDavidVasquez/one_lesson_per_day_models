@@ -1,50 +1,50 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity } from "typeorm";
 import { BaseUser } from "./base-user.model";
 import { UserRole } from "../shared/enums/user.enums";
-
-
 
 /**
  * Entidad User extends BaseUser
  * 
+ * NOTA: No tiene relación directa con Session por diseño.
+ * Las sesiones se manejan independientemente usando userId + authEntity
  */
 @Entity({ name: "users" })
 export class User extends BaseUser {
 
-
-    @Column({
-        comment: 'Roles user',
-        type: 'enum',
-        enum: UserRole,
-        nullable: true
-    })
-    roles?: UserRole;
-
-  // ===== RELACIONES =====
-  
-/*   @OneToMany(() => Session, (session) => session.user, {
-    cascade: true,
+  @Column({
+    comment: 'Roles user',
+    type: 'enum',
+    enum: UserRole,
+    nullable: true
   })
-  sessions!: Session[]; */
-  
-
-  // ===== MÉTODOS ESPECÍFICOS =====
+  roles?: UserRole;
 
   /**
-   * Verificar si el usuario tiene una sesión activa
+   * Obtener authEntity para esta entidad
    */
-/*   hasActiveSession(): boolean {
-    return this.sessions?.some((s) => s.isActive()) ?? false;
+  getAuthEntity(): string {
+    return 'users';
   }
- */
+
   /**
-   * Convertir a objeto público sobrescribiendo BaseUser
+   * Obtener datos básicos para crear sesión
    */
-/*   override toPublic() {
+  getSessionData(): { userId: string; userEmail: string; authEntity: string } {
+    return {
+      userId: this.id,
+      userEmail: this.email,
+      authEntity: this.getAuthEntity()
+    };
+  }
+
+  /**
+   * Convertir a objeto público
+   */
+  override toPublic() {
     const baseData = super.toPublic();
     return {
       ...baseData,
-      hasActiveSession: this.hasActiveSession(),
+      authEntity: this.getAuthEntity()
     };
-  } */
+  }
 }
