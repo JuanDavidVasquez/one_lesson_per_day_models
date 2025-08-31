@@ -25,7 +25,10 @@ export class PetMedicalRecord {
   @Column({ default: false })
   vaccinated!: boolean;
 
-  @Column({ default: false })
+  @Column({ 
+    default: false,
+    comment: 'Indica si el animal ha sido desparasitado interna o externamente'
+  })
   dewormed!: boolean;
 
   @Column({ default: false })
