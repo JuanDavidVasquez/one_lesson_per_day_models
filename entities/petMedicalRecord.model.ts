@@ -8,11 +8,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Pet } from './pet.model';
+import { HealthStatus } from '../shared/enums/healthStatus.enum';
 
 @Entity('pet_medical_records')
 export class PetMedicalRecord {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @ManyToOne(() => Pet, (pet) => pet.medicalRecords, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'pet_id' })
@@ -36,10 +37,10 @@ export class PetMedicalRecord {
 
   @Column({
     type: 'enum',
-    enum: ['sano', 'tratamiento', 'enfermedad_cronica', 'recuperacion'],
-    default: 'sano',
+    enum: HealthStatus,
+    default: HealthStatus.HEALTHY,
   })
-  healthStatus!: 'sano' | 'tratamiento' | 'enfermedad_cronica' | 'recuperacion';
+  healthStatus!: HealthStatus;
 
   @Column({ type: 'text', nullable: true })
   notes!: string;

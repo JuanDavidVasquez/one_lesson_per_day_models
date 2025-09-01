@@ -15,22 +15,19 @@ import { Breed } from './breeds.model';
 import { PetAdoption } from './petAdoption.model';
 import { PetMedicalRecord } from './petMedicalRecord.model';
 import { PetPhysicalCharacteristics } from './petPhysicalCharacteristics.model';
+import { ShelterPet } from './shelterPets.model';
 
 @Entity('pets')
 export class Pet {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ length: 100 })
     name!: string;
 
-    @Column({ unique: true, nullable: true, length: 50 })
-    code!: string; // Código interno del refugio
-
     @Column({ type: 'date', nullable: true })
-    intakeDate!: Date; // fecha de ingreso
+    intakeDate!: Date;
 
-    // 🔹 Datos básicos
     @Column({ type: 'enum', enum: ['macho', 'hembra'] })
     sex!: 'macho' | 'hembra';
 
@@ -40,11 +37,9 @@ export class Pet {
     @Column({ type: 'int', nullable: true })
     estimatedAge!: number;
 
-    // 🔹 Multimedia
     @Column({ type: 'varchar', length: 255, nullable: true })
     photoUrl!: string;
 
-    // 🔹 Fechas
     @CreateDateColumn()
     createdAt!: Date;
 
@@ -54,7 +49,7 @@ export class Pet {
     @DeleteDateColumn()
     deletedAt!: Date;
 
-    // 🔹 Relación
+    // Relaciones
     @OneToOne(() => PetAdoption, (adoption) => adoption.pet)
     adoption!: PetAdoption;
 
@@ -63,7 +58,7 @@ export class Pet {
 
     @OneToOne(() => PetPhysicalCharacteristics, (pc) => pc.pet)
     physicalCharacteristics!: PetPhysicalCharacteristics;
-    
+
     @ManyToOne(() => Species, (species) => species.pets, { eager: true })
     @JoinColumn({ name: 'species_id' })
     species!: Species;
@@ -72,5 +67,6 @@ export class Pet {
     @JoinColumn({ name: 'breed_id' })
     breed!: Breed;
 
-
+    @OneToMany(() => ShelterPet, (shelterPet) => shelterPet.pet)
+    shelterPets!: ShelterPet[];
 }

@@ -8,11 +8,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Pet } from './pet.model';
+import { StatusAdoption } from '../shared/enums/statusAdoption.enum';
 
 @Entity('pet_adoptions')
 export class PetAdoption {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @OneToOne(() => Pet, (pet) => pet.adoption, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'pet_id' })
@@ -20,10 +21,10 @@ export class PetAdoption {
 
   @Column({
     type: 'enum',
-    enum: ['disponible', 'en proceso', 'adoptado', 'no disponible'],
-    default: 'disponible',
+    enum: StatusAdoption,
+    default: StatusAdoption.AVAILABLE,
   })
-  status!: 'disponible' | 'en proceso' | 'adoptado' | 'no disponible';
+  status!: StatusAdoption;
 
   @Column({ default: false })
   adoptionReady!: boolean;

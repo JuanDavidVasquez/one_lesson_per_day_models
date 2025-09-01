@@ -8,11 +8,13 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 import { Pet } from './pet.model';
+import { CoatType } from '../shared/enums/coatType.enum';
+import { Size } from '../shared/enums/size.enum';
 
 @Entity('pet_physical_characteristics')
 export class PetPhysicalCharacteristics {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @OneToOne(() => Pet, (pet) => pet.physicalCharacteristics, {
         onDelete: 'CASCADE',
@@ -21,32 +23,45 @@ export class PetPhysicalCharacteristics {
     pet!: Pet;
 
     // 🔹 Datos físicos básicos
-    @Column({ type: 'float', nullable: true })
-    weight!: number; // kg
+    @Column({ 
+        type: 'float', 
+        nullable: true,
+        comment: 'Peso del animal en kg'
+    })
+    weight!: number;
 
-    @Column({ type: 'float', nullable: true })
-    height!: number; // cm
+    @Column({ 
+        type: 'float',
+        nullable: true,
+        comment: 'Altura del animal en cm'
+     })
+    height!: number;
 
     @Column({ type: 'varchar', length: 50, nullable: true })
     color!: string;
 
     @Column({
         type: 'enum',
-        enum: ['corto', 'medio', 'largo', 'sin pelo'],
+        enum: CoatType,
         nullable: true,
     })
-    coatType!: 'corto' | 'medio' | 'largo' | 'sin pelo';
+    coatType!: CoatType;
 
     @Column({ type: 'varchar', length: 50, nullable: true })
     eyeColor!: string;
 
-    @Column({ type: 'enum', enum: ['small', 'medium', 'large'], nullable: true })
-    size!: 'small' | 'medium' | 'large';
+    @Column({ type: 'enum',
+        enum: Size,
+        nullable: true })
+    size!: Size;
 
-    @Column({ type: 'varchar', length: 100, nullable: true })
-    distinctiveMarks!: string; // Ej. cicatriz, mancha blanca, etc.
+    @Column({ type: 'varchar', 
+        length: 100, 
+        nullable: true,
+        comment: 'Marcas distintivas del animal'
+    })
+    distinctiveMarks!: string;
 
-    // 🔹 Control de creación/actualización
     @CreateDateColumn()
     createdAt!: Date;
 
